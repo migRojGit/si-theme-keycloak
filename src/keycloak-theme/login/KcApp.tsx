@@ -1,17 +1,19 @@
-import "./KcApp.css";
+import "./assets/css/KcApp.css";
 import { lazy, Suspense } from "react";
 import Fallback, { type PageProps } from "keycloakify/login";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
 import Template from "./Template";
 
+
 const Login = lazy(() => import("./pages/Login"));
 // If you can, favor register-user-profile.ftl over register.ftl, see: https://docs.keycloakify.dev/realtime-input-validation
-const Register = lazy(() => import("./pages/Register"));
-const RegisterUserProfile = lazy(() => import("./pages/RegisterUserProfile"));
-const Terms = lazy(() => import("./pages/Terms"));
+// const Register = lazy(() => import("./pages/Register"));
+// const RegisterUserProfile = lazy(() => import("./pages/RegisterUserProfile"));
+// const Terms = lazy(() => import("./pages/Terms"));
 const MyExtraPage1 = lazy(() => import("./pages/MyExtraPage1"));
 const MyExtraPage2 = lazy(() => import("./pages/MyExtraPage2"));
+const LoginResetPassword = lazy(() => import('./pages/LoginResetPassword'));
 const Info = lazy(() => import("keycloakify/login/pages/Info"));
 
 // This is like adding classes to theme.properties 
@@ -45,12 +47,13 @@ export default function KcApp(props: { kcContext: KcContext; }) {
             {(() => {
                 switch (kcContext.pageId) {
                     case "login.ftl": return <Login {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-                    case "register.ftl": return <Register {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-                    case "register-user-profile.ftl": return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />
-                    case "terms.ftl": return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+                    // case "register.ftl": return <Register {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+                    // case "register-user-profile.ftl": return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />
+                    // case "terms.ftl": return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
                     // Removes those pages in you project. They are included to show you how to implement keycloak pages
                     // that are not yes implemented by Keycloakify. 
                     // See: https://docs.keycloakify.dev/limitations#some-pages-still-have-the-default-theme.-why
+                    case "login-reset-password.ftl": return <LoginResetPassword {...{kcContext, i18n, Template, classes}} doUseDefaultCss={true}/>
                     case "my-extra-page-1.ftl": return <MyExtraPage1 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
                     case "my-extra-page-2.ftl": return <MyExtraPage2 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
                     // We choose to use the default Template for the Info page and to download the theme resources.

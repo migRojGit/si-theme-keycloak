@@ -2,12 +2,13 @@ import { createGetKcContext } from "keycloakify/login";
 
 export type KcContextExtension =
 	| { pageId: "login.ftl";  }
+	| { pageId: 'login-reset-password.ftl'; }	
 	| { pageId: "my-extra-page-1.ftl"; }
 	| { pageId: "my-extra-page-2.ftl"; someCustomValue: string; }
 	// NOTE: register.ftl is deprecated in favor of register-user-profile.ftl
 	// but let's say we use it anyway and have this plugin enabled: https://github.com/micedre/keycloak-mail-whitelisting
 	// keycloak-mail-whitelisting define the non standard ftl global authorizedMailDomains, we declare it here.
-	| { pageId: "register.ftl"; authorizedMailDomains: string[]; };
+	| { pageId: "register.ftl"; authorizedMailDomains: string[]; }
 
 //NOTE: In most of the cases you do not need to overload the KcContext, you can 
 // just call createGetKcContext(...) without type arguments.  
@@ -20,12 +21,49 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
 			pageId: "login.ftl",
 			locale: {
 				//When we test the login page we do it in french
-				currentLanguageTag: "fr",
-			},
+				currentLanguageTag: "es",
+			},		
+			
+			// social: {
+			// 	providers: [
+			// 		{
+			// 			displayName: 'Google',
+			// 			providerId: 'google',
+			// 			alias: 'google',
+			// 		},
+			// 		{
+			// 			displayName: 'Facebook',
+			// 			providerId: 'facebook',
+			// 			alias: 'facebook',
+			// 		},
+			// 		{
+			// 			displayName: 'LinkedIn',
+			// 			providerId: 'linkedin',
+			// 			alias: 'linkedin',
+			// 		},
+			// 		{
+			// 			displayName: 'Twitter',
+			// 			providerId: 'twitter',
+			// 			alias: 'twitter',
+			// 		}
+			// 	]
+			// }
 			//Uncomment the following line for hiding the Alert message
 			//"message": undefined
 			//Uncomment the following line for showing an Error message
 			//message: { type: "error", summary: "This is an error" }
+		},
+		{
+			pageId: 'login-reset-password.ftl',
+			realm: {
+				loginWithEmailAllowed: true
+			},
+			url: {
+				loginAction: 'reset-credentials',
+				loginUrl: 'login.ftl',
+				loginRestartFlowUrl: 'login.ftl',
+				loginWithEmailAllowed: 'true'
+			}
 		},
 		{
 			pageId: "my-extra-page-2.ftl",
@@ -86,7 +124,8 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
 				exists: (fieldName: string) => fieldName === "email"
 			},
 
-		}
+		},
+
 	],
 	// Defined in vite.config.ts
 	// See: https://docs.keycloakify.dev/environnement-variables
@@ -97,7 +136,19 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
 
 export const { kcContext } = getKcContext({
 	// Uncomment to test the login page for development.
-	//mockPageId: "login.ftl",
+	mockPageId: "login.ftl",
+	// mockPageId: "error.ftl"
+	// mockPageId: "select-authenticator.ftl",
+	// mockPageId: "update-user-profile.ftl"
+	// mockPageId: "update-email.ftl",
+	// mockPageId: "webauthn-authenticate.ftl"
+	// mockPageId: "terms.ftl",
+	// mockPageId: "logout-confirm.ftl",
+	// mockPageId: "login-oauth-grant.ftl"
+	// mockPageId: 'login-update-password.ftl'
+	// mockPageId: 'login-reset-password.ftl'
+	// mockPageId: 'reset-credentials.ftl'
+
 });
 
 

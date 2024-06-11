@@ -1,12 +1,26 @@
-import { useState, type FormEventHandler } from "react";
+import React, { useEffect, useState, type FormEventHandler } from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
+import { checkRut, useRut, formatRut } from "react-rut-formatter";
 
 const my_custom_param = new URL(window.location.href).searchParams.get("my_custom_param");
+// interface IndexRealm {
+//     [key: string]           : string,
+//     'confuturo-sso-qa'      : string,
+//     'confuturo-sso'         : string,
+//     'myrealm'               : string,
+//     'sitio-intermediario'   : string,
+// }
+/**VALIDAR CLIENTID en relación al reino PROD y QA */
+// interface indexClient {
+//     [key: string]   : string,
+//     'sitio-intermediario' : string,
+//     ''
+// }
 
 if (my_custom_param !== null) {
     console.log("my_custom_param:", my_custom_param);
@@ -14,21 +28,57 @@ if (my_custom_param !== null) {
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
-
     const { getClassName } = useGetClassName({
         doUseDefaultCss,
         classes
     });
-
+    // const indexRealm: IndexRealm = {
+    //     'confuturo-sso-qa'      : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
+    //     'confuturo-sso'         : 'https://sitio-intermediario.confuturo.cl/recover-password',
+    //     'myrealm'               : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
+    //     'sitio-intermediario'   : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
+    // }
+    const { rut, updateRut } = useRut();
     const { social, realm, url, usernameHidden, login, auth, registrationDisabled } = kcContext;
-
     const { msg, msgStr } = i18n;
+    const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(true);
+    const [isValidTaxId, setIsValidTaxId] = useState(false);
+    const [passValue, setPassValue] = useState("");
+    console.log({ kcContext })
+    // const realmName: string = realm?.name ?? "myRealm";
+    // url.loginResetCredentialsUrl = indexRealm[realmName] 
+    // console.log('sitio-intermediario',indexRealm)
+    // console.log({ kcContext })
+    // console.log(realmName)
+    const validateUsername = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
+        const rutAux = formatRut(value)
+        updateRut(rutAux);
+       if (!checkRut(rutAux)) {
+        setIsValidTaxId(false);
+        setPassValue('');
+        return
+       }
+       setIsValidTaxId(true);
+    }
 
-    const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
+    const passwordValidate = (event: React.ChangeEvent<HTMLInputElement>): void => {
+       const passAux = event.target.value
+       setPassValue(passAux);
+       validateProps()
+    }
 
-    const onSubmit = useConstCallback<FormEventHandler<HTMLFormElement>>(e => {
+    const validateProps = (): void => {
+        const result = isValidTaxId && passValue.length > 4 ? false : true;
+        setIsLoginButtonDisabled(result);
+    }
+
+    useEffect(() => {
+        validateProps();
+    }, [isValidTaxId, passValue])
+
+   
+    const onSubmit = useConstCallback<FormEventHandler<HTMLFormElement>>(e => {        
         e.preventDefault();
-
         setIsLoginButtonDisabled(true);
 
         const formElement = e.target as HTMLFormElement;
@@ -39,6 +89,10 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
 
         formElement.submit();
     });
+
+    const changeLabelText = (label: any) => {
+        return label === 'usernameOrEmail' || label === 'username' ? 'Ingresa tu RUT' : msg(label)
+    }
 
     return (
         <Template
@@ -85,7 +139,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                         return (
                                             <>
                                                 <label htmlFor={autoCompleteHelper} className={getClassName("kcLabelClass")}>
-                                                    {msg(label)}
+                                                    {changeLabelText(label)}
                                                 </label>
                                                 <input
                                                     tabIndex={1}
@@ -95,10 +149,12 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                                     //the browser how to pre fill the form but before submit we put it back
                                                     //to username because it is what keycloak expects.
                                                     name={autoCompleteHelper}
-                                                    defaultValue={login.username ?? ""}
+                                                    value={rut.formatted}
+                                                    onChange={validateUsername}
                                                     type="text"
                                                     autoFocus={true}
                                                     autoComplete="off"
+                                                    maxLength={12}
                                                 />
                                             </>
                                         );
@@ -115,6 +171,10 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                     name="password"
                                     type="password"
                                     autoComplete="off"
+                                    maxLength={20}
+                                    disabled={!checkRut(rut.formatted)}
+                                    onChange={ e => passwordValidate(e) }
+                                    value={passValue}
                                 />
                             </div>
                             <div className={clsx(getClassName("kcFormGroupClass"), getClassName("kcFormSettingClass"))}>
@@ -171,7 +231,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                     id="kc-login"
                                     type="submit"
                                     value={msgStr("doLogIn")}
-                                    disabled={isLoginButtonDisabled}
+                                    disabled={ isLoginButtonDisabled }
                                 />
                             </div>
                         </form>
@@ -188,7 +248,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                 social.providers.length > 4 && getClassName("kcFormSocialAccountDoubleListClass")
                             )}
                         >
-                            {social.providers.map(p => (
+                            {social.providers.map((p) => (
                                 <li key={p.providerId} className={getClassName("kcFormSocialAccountListLinkClass")}>
                                     <a href={p.loginUrl} id={`zocial-${p.alias}`} className={clsx("zocial", p.providerId)}>
                                         <span>{p.displayName}</span>

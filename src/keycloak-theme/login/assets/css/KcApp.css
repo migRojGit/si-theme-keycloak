@@ -1,0 +1,137 @@
+:root{
+	--primary-bg-color: #ea5951;
+}
+
+.my-color {
+	color: var(--primary-bg-color) !important;
+}
+
+.my-font {
+	font-family: 'Font Awesome', sans-serif;
+}
+
+.my-root-class {
+	background: white;
+	height: 100vh;
+    overflow: hidden;
+}
+
+.my-root-class body {
+	background: url("../img/loby.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+}
+
+/*CONFUTURO*/
+.header-brand img{
+	filter: drop-shadow(3px 3px 1px black);
+}
+#kc-current-locale-link {
+	color: #030302 !important;
+}
+#kc-page-title{
+	color: var(--primary-bg-color);
+	font-weight: bold;
+}
+#kc-h3-subtitle{
+	margin-top: 0.5rem;
+}
+#kc-header{
+	margin-bottom: 0.5rem;
+}
+#kcHeaderWrapperClass {
+	display: flex;
+    justify-content: center;
+}
+.center-head{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kcFormHeaderClass{
+	display: flex;
+    align-items: center;
+	margin-bottom: 3rem !important;
+}
+.kcFormHeaderClass div:first-child{
+	width: 100%;
+	margin-right: 5px !important;
+}
+.kcFormCardClass {
+	backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 5px 4px 4px 4px rgba(0, 0, 0, 0.2509803922);
+}
+#kc-form-buttons input[type=submit] {
+    margin-bottom: 1.5rem !important;
+    min-width: 2.75rem;
+    font-weight: 400;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    font-size: 1.4rem;
+    color: rgb(255, 255, 255) !important;
+    background-color: #ea5951 !important;
+    border-color: #ea5951 !important;
+    display: inline-block;
+    text-align: center;
+    user-select: none;
+    line-height: 1.84615;
+    white-space: nowrap;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-radius: 24px;
+    transition: all 0.2s ease-in-out 0s;
+    padding: 0.7rem 1rem;
+    width: 100%;
+}
+#kc-form-buttons input[type=submit]:hover{
+	background-color: #ed1f14 !important;
+}
+#kc-form-buttons input[type=submit]:focus{
+	background-color: #c81b0e !important;
+	border-color: #c81b0e !important;
+	outline: #fd1100;
+}
+.kcInputClass {
+	border-radius: 10px !important;
+}
+#kc-form-buttons input:disabled{
+	background-color: #959595 !important;
+	pointer-events: none !important;
+	border-color: #959595 !important;
+}
+.btn-primary{
+	background-image: none;
+}
+#kc-social-providers{
+	margin-top: 2rem;
+}
+.kcFormSocialAccountListLinkClass a{
+	border-radius: 10px;
+}
+.zocial::before{
+	margin: 3px 3px 3px 3px;
+	font-size: 15px !important;
+}
+.login-pf a:hover {
+	color: var(--primary-bg-color) !important;
+}
+.kcFormOptionsWrapperClass a{
+	color: var(--primary-bg-color) !important;
+}
+a{
+	color: var(--primary-bg-color) !important;
+}
+.kcInputClass:hover{
+	border-color: #d45d57 !important;
+}
+.kcInputClass:focus{
+	border-color: #d45d57 !important;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.042), 0 0 8px rgba(240, 31, 4, 0.642);
+}

@@ -25,6 +25,7 @@
     "powerhooks": "^1.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-rut-formatter": "^0.2.2",
     "tsafe": "^1.6.6",
     "zod": "^3.22.4"
   },

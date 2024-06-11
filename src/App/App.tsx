@@ -1,6 +1,6 @@
-import "./App.css";
-import reactSvgUrl from "./assets/react.svg";
-import viteSvgUrl from "./assets/vite.svg";
+import "./assets/css/App.css";
+import reactSvgUrl from "./assets/img/react.svg";
+import viteSvgUrl from "./assets/img/vite.svg";
 import { OidcProvider, useOidc, getKeycloakAccountUrl } from "./oidc";
 
 export default function App() {

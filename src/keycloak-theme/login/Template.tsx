@@ -8,7 +8,7 @@ import { type TemplateProps } from "keycloakify/login/TemplateProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "./kcContext";
 import type { I18n } from "./i18n";
-import keycloakifyLogoPngUrl from "./assets/keycloakify-logo.png";
+import confuturoLogoSvgUrl from "./assets/img/logo.svg";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -17,7 +17,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         displayRequiredFields = false,
         displayWide = false,
         showAnotherWayIfPresent = true,
-        headerNode,
+        // headerNode,
         showUsernameNode = null,
         infoNode = null,
         kcContext,
@@ -28,11 +28,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     } = props;
 
     const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
-
     const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
-
     const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
-
+    const showLogin     : string = `Ingreso a ${ realm.displayNameHtml }`
+    const showSubtitle  : string = `Ingresa al portal con tus credenciales`
     const { isReady } = usePrepareTemplate({
         "doFetchDefaultThemeResources": doUseDefaultCss,
         "styles": [
@@ -46,9 +45,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         "htmlLangProperty": locale?.currentLanguageTag,
         "documentTitle": i18n.msgStr("loginTitle", kcContext.realm.displayName)
     });
-
+    console.log({url})
     useEffect(() => {
-        console.log(`Value of MY_ENV_VARIABLE on the Keycloak server: "${kcContext.properties.MY_ENV_VARIABLE}"`);
+        
     }, []);
 
     if (!isReady) {
@@ -63,14 +62,12 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     className={getClassName("kcHeaderWrapperClass")}
                     style={{ "fontFamily": '"Work Sans"' }}
                 >
-                    {/* 
-                        Here we are referencing the `keycloakify-logo.png` in the `public` directory.  
-                        When possible don't use this approach, instead ...
-                    */}
-                    <img src={`${import.meta.env.BASE_URL}keycloakify-logo.png`} alt="Keycloakify logo" width={50} />
-                    {msg("loginTitleHtml", realm.displayNameHtml)}!!!
-                    {/* ...rely on the bundler to import your assets, it's more efficient */}
-                    <img src={keycloakifyLogoPngUrl} alt="Keycloakify logo" width={50} />
+                    <div className="header-brand">
+                    <img src={confuturoLogoSvgUrl}
+                         className="header-brand-img logo-confuturo"
+                         alt="confuturo-logo"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -105,12 +102,16 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         {msg("requiredFields")}
                                     </span>
                                 </div>
-                                <div className="col-md-10">
-                                    <h1 id="kc-page-title">{headerNode}</h1>
+                                <div className="col-md-10 center-head">
+                                <h1 id="kc-page-title">{showLogin}</h1>
+                                    <h3 id="kc-h3-subtitle">{showSubtitle}</h3>
                                 </div>
                             </div>
                         ) : (
-                            <h1 id="kc-page-title">{headerNode}</h1>
+                            <div className="col-md-10 center-head">
+                                <h1 id="kc-page-title">{showLogin}</h1>
+                                <h3 id="kc-h3-subtitle">{showSubtitle}</h3>
+                            </div>
                         )
                     ) : displayRequiredFields ? (
                         <div className={getClassName("kcContentWrapperClass")}>
