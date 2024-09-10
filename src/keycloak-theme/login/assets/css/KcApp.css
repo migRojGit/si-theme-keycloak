@@ -17,7 +17,7 @@
 }
 
 .my-root-class body {
-	background: url("../img/loby.jpg") no-repeat center center fixed;
+	background: white no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -28,7 +28,7 @@
 
 /*CONFUTURO*/
 .header-brand img{
-	filter: drop-shadow(3px 3px 1px black);
+	/* filter: drop-shadow(3px 3px 1px black); */
 }
 #kc-current-locale-link {
 	color: #030302 !important;

@@ -45,7 +45,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         "htmlLangProperty": locale?.currentLanguageTag,
         "documentTitle": i18n.msgStr("loginTitle", kcContext.realm.displayName)
     });
-    console.log({url})
     useEffect(() => {
         
     }, []);

@@ -8,13 +8,13 @@ import type { I18n } from "../i18n";
 import { checkRut, useRut, formatRut } from "react-rut-formatter";
 
 const my_custom_param = new URL(window.location.href).searchParams.get("my_custom_param");
-// interface IndexRealm {
-//     [key: string]           : string,
-//     'confuturo-sso-qa'      : string,
-//     'confuturo-sso'         : string,
-//     'myrealm'               : string,
-//     'sitio-intermediario'   : string,
-// }
+interface IndexRealm {
+    [key: string]           : string,
+    'confuturo-sso-qa'      : string,
+    'confuturo-sso'         : string,
+    'myrealm'               : string,
+    'sitio-intermediario'   : string,
+}
 /**VALIDAR CLIENTID en relación al reino PROD y QA */
 // interface indexClient {
 //     [key: string]   : string,
@@ -32,21 +32,21 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
         doUseDefaultCss,
         classes
     });
-    // const indexRealm: IndexRealm = {
-    //     'confuturo-sso-qa'      : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
-    //     'confuturo-sso'         : 'https://sitio-intermediario.confuturo.cl/recover-password',
-    //     'myrealm'               : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
-    //     'sitio-intermediario'   : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
-    // }
+    const indexRealm: IndexRealm = {
+        'confuturo-sso-qa'      : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
+        'confuturo-sso'         : 'https://sitio-intermediario.confuturo.cl/recover-password',
+        'myrealm'               : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
+        'sitio-intermediario'   : 'https://sitio-intermediario-qa.confuturo.cl/recover-password',
+    }
     const { rut, updateRut } = useRut();
     const { social, realm, url, usernameHidden, login, auth, registrationDisabled } = kcContext;
     const { msg, msgStr } = i18n;
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(true);
     const [isValidTaxId, setIsValidTaxId] = useState(false);
     const [passValue, setPassValue] = useState("");
-    console.log({ kcContext })
-    // const realmName: string = realm?.name ?? "myRealm";
-    // url.loginResetCredentialsUrl = indexRealm[realmName] 
+    // console.log({ kcContext })
+    const realmName: string = realm?.name ?? "myrealm";
+    url.loginResetCredentialsUrl = indexRealm[realmName] 
     // console.log('sitio-intermediario',indexRealm)
     // console.log({ kcContext })
     // console.log(realmName)
